@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>🧬 Automatic Exon-Intron Splicer Pipeline 🔮</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #fff0f5;
+            color: #4b0082;
+        }
+        .bg-custom-purple { background-color: #7b68ee !important; }
+        .text-custom-indigo { color: #4b0082 !important; }
+        .btn-custom-blue {
+            background-color: #87cefa;
+            color: #4b0082;
+            border: none;
+            font-weight: 800;
+            transition: all 0.3s ease;
+        }
+        .btn-custom-blue:hover {
+            background-color: #4169e1;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+        .sidebar {
+            background-color: #6a5acd;
+            color: white;
+            min-height: 100vh;
+            border-radius: 0 24px 24px 0;
+            box-shadow: 4px 0 15px rgba(106, 90, 205, 0.2);
+        }
+        .main-content { padding: 30px; }
+        .card-custom {
+            border: none;
+            border-radius: 18px;
+            box-shadow: 0 8px 20px rgba(255, 182, 193, 0.3);
+            background-color: white;
+            transition: transform 0.2s;
+        }
+        .card-custom:hover { transform: translateY(-4px); }
+        .badge-a { background-color: #ffb4ae; color: #4b0082; }
+        .badge-t { background-color: #b3cde3; color: #4b0082; }
+        .badge-g { background-color: #decfec; color: #4b0082; }
+        .badge-c { background-color: #e5d8bd; color: #4b0082; }
+        .badge-bp { background-color: #e6e6fa; color: #6a5acd; }
+        .table-custom {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(106, 90, 205, 0.1);
+        }
+        .table-custom th {
+            background-color: #7b68ee !important;
+            color: white !important;
+            font-weight: 800;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid m-0 p-0">
+        <div class="row g-0">
+            
+            <div class="col-md-3 sidebar p-4 d-flex flex-column gap-4">
+                <div class="text-center my-3">
+                    <h2 class="fw-bold">🧬 Auto Pipeline</h2>
+                    <p class="small opacity-75">Splicer Otomatis Berkas Mentah</p>
+                </div>
+                
+                <hr class="opacity-25 text-white">
+
+                <div class="card p-3 bg-white bg-opacity-10 border-0 text-white rounded-4">
+                    <h5 class="fw-bold mb-3">📁 Input Berkas Gelondongan</h5>
+                    <form action="/" method="POST" enctype="multipart/form-data" class="d-flex flex-column gap-3">
+                        <div>
+                            <label class="form-label small fw-bold">Format Berkas Masukan:</label>
+                            <input type="text" class="form-control bg-light border-0 text-dark rounded-3 fw-bold" value="GenBank (.gb / .gbk)" readonly>
+                        </div>
+                        <div>
+                            <label class="form-label small fw-bold">Pilih File:</label>
+                            <input type="file" name="file_kamu" class="form-control border-0 rounded-3" required>
+                        </div>
+                        <button type="submit" class="btn btn-custom-blue w-100 py-2 rounded-3 mt-2">🚀 Potong & Analisis</button>
+                    </form>
+                </div>
+
+                {% if ada_data %}
+                <div class="mt-auto">
+                    <a href="/unduh-csv" class="btn btn-light text-custom-indigo w-100 fw-bold py-2 rounded-3 shadow-sm">
+                        📥 Unduh Berkas laporan CSV
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="col-md-9 main-content">
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <span class="fs-1">🔮</span>
+                    <div>
+                        <h1 class="fw-bold m-0 text-custom-indigo">AUTOMATIC GENOME SPLICER DASHBOARD</h1>
+                        <p class="text-muted m-0">Sistem Pemotongan dan Pemisahan Ekson vs Intron Otomatis Tanpa Manual</p>
+                    </div>
+                </div>
+
+                {% if not ada_data %}
+                <div class="card card-custom p-5 text-center my-5 border-start border-5 border-custom-purple">
+                    <span class="fs-1 mb-3">🪄</span>
+                    <h4 class="fw-bold text-custom-indigo">Sistem Siap Melakukan Pemotongan Otomatis</h4>
+                    <p class="text-muted col-md-8 mx-auto">Silakan upload satu file GenBank (.gb) murni dari NCBI. Kode Python di belakang layar akan membaca instruksi peta koordinat, mengiris untai menjadi fragmen ekson dan intron secara mandiri, lalu menghitung statistik energinya.</p>
+                </div>
+                {% else %}
+
+                <h4 class="fw-bold text-custom-indigo mb-3">🌟 Hasil Ekstraksi Kontras Terbaik</h4>
+                <div class="row g-3 mb-4">
+                    {% for juara in top_3_juara %}
+                    <div class="col-md-4">
+                        <div class="card card-custom p-3 bg-white border-bottom border-4 {% if 'exon' in juara.header.lower() %}border-primary{% else %}border-danger{% endif %}">
+                            <span class="badge {% if 'exon' in juara.header.lower() %}bg-primary-subtle text-primary{% else %}bg-danger-subtle text-danger{% endif %} align-self-start mb-2 px-2 py-1 rounded-3">
+                                {% if 'exon' in juara.header.lower() %}📈 Ekson Tertinggi{% else %}📉 Intron Terendah{% endif %}
+                            </span>
+                            <h5 class="fw-bold text-truncate text-custom-indigo mb-1" title="{{ juara.header }}">{{ juara.header }}</h5>
+                            <p class="small text-muted mb-2">Panjang: {{ juara.sequence|length }} bp</p>
+                            <h3 class="fw-bold m-0 text-custom-indigo">{{ "%.2f"|format(juara.gc_content) }}% <span class="fs-6 fw-normal text-muted">GC</span></h3>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="row g-4 mb-4">
+                    <div class="col-md-12">
+                        <div class="card card-custom p-4">
+                            <h4 class="fw-bold text-custom-indigo mb-3">📊 Grafik Distribusi GC-Content Hasil Autocut</h4>
+                            <div class="text-center bg-light p-2 rounded-4">
+                                <img src="/static/gc_chart.png?v={{ range(1, 9999)|random }}" class="img-fluid rounded-3 shadow-sm" alt="Grafik Distribusi GC">
+                            </div>
+                            <div class="d-flex justify-content-center gap-4 mt-3 small fw-bold">
+                                <div><span class="badge px-3 py-1 rounded-3 me-1" style="background-color: #b3cde3; border: 1px solid #4a4a4a;"> </span> Wilayah Coding (Ekson)</div>
+                                <div><span class="badge px-3 py-1 rounded-3 me-1" style="background-color: #fbb4ae; border: 1px solid #4a4a4a;"> </span> Wilayah Non-Coding (Intron)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card-custom p-4 mb-4">
+                    <h4 class="fw-bold text-custom-indigo mb-3">📋 Tabel Fragmentasi Sekuens Mandiri</h4>
+                    <div class="table-responsive table-custom">
+                        <table class="table table-hover align-middle m-0 bg-white">
+                            <thead>
+                                <tr class="text-center">
+                                    <th class="text-start ps-4">Nama Fragmen Potongan</th>
+                                    <th>Panjang Hasil Potong</th>
+                                    <th>GC Content</th>
+                                    <th class="pe-4">Matriks Nukleotida (Dictionary)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for data in hasil %}
+                                <tr class="text-center">
+                                    <td class="text-start text-truncate ps-4 fw-semibold text-custom-indigo" style="max-width: 230px;" title="{{ data.header }}">{{ data.header }}</td>
+                                    <td><span class="badge badge-bp font-monospace px-2 py-1 rounded-3">{{ data.sequence|length }} bp</span></td>
+                                    <td class="fw-bold text-custom-indigo">{{ "%.2f"|format(data.gc_content) }}%</td>
+                                    <td class="pe-4 text-center">
+                                        <span class="badge badge-a font-monospace px-2 py-1 rounded-3">A: {{ data.counts.A }}</span>
+                                        <span class="badge badge-t font-monospace px-2 py-1 rounded-3">T: {{ data.counts.T }}</span>
+                                        <span class="badge badge-g font-monospace px-2 py-1 rounded-3">G: {{ data.counts.G }}</span>
+                                        <span class="badge badge-c font-monospace px-2 py-1 rounded-3">C: {{ data.counts.C }}</span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
