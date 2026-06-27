@@ -95,11 +95,11 @@ Proyek ini telah divalidasi menggunakan sekuens gen *Homo sapiens* subunit hemog
 
 | Nama Fragmen Potongan | Panjang Basa (bp) | GC-Content (%) | Fungsi Biologis |
 | --- | --- | --- | --- |
-| `HBB_exon_2_(Auto_Cut)` | 223 bp | **60.09%** | Wilayah Pengode (Stabilitas Tinggi) |
-| `HBB_exon_1_(Auto_Cut)` | 142 bp | **53.52%** | Wilayah Pengode (Stabilitas Tinggi) |
-| `HBB_exon_3_(Auto_Cut)` | 129 bp | **48.06%** | Wilayah Pengode (Stabilitas Tinggi) |
-| `HBB_intron_1_(Auto_Cut)` | 130 bp | **36.15%** | Wilayah Non-Pengode (Kaya A-T) |
-| `HBB_intron_2_(Auto_Cut)` | 850 bp | **35.88%** | Wilayah Non-Pengode (Kaya A-T) |
+| `HBB_exon_1_(Auto_Cut)` | 92 bp | **59.78%** | Wilayah Pengode (Stabilitas Tinggi) |
+| `HBB_exon_3_(Auto_Cut)` | 109 bp | **57.80%** | Wilayah Pengode (Stabilitas Tinggi) |
+| `HBB_exon_4_(Auto_Cut)` | 104 bp | **55.77%** | Wilayah Pengode (Stabilitas Tinggi) |
+| `HBB_intron_1_(Auto_Cut)` | 130 bp | **45.38%** | Wilayah Non-Pengode (Kaya A-T) |
+| `HBB_intron_3_(Auto_Cut)` | 688 bp | **41.13%** | Wilayah Non-Pengode (Kaya A-T) |
 
 *Kesimpulan Biologis:* Wilayah Ekson memiliki nilai *GC-content* yang dominan tinggi karena tuntutan tekanan seleksi evolusioner (*evolutionary selective pressure*) untuk mempertahankan akurasi translasi protein melalui stabilitas tiga ikatan hidrogen basa G-C. Sebaliknya, wilayah Intron bebas berakumulasi dengan mutasi kaya basa A-T (ikatan hidrogen ganda) karena akan dibuang pada proses *splicing*.
 
